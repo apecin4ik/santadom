@@ -1,0 +1,238 @@
+# ============ DomSanta - тёмный новогодний ивент ============
+# Цвета: &-коды. Время в секундах, если не указано иное.
+
+world: grief-1                 # мир ивента (если не найден - первый обычный мир)
+inventory-title: "&b❄ &4&lПОДАРОК &f&lСАНТЫ &b❄"
+
+location:
+  x-min: -5000
+  x-max: 5000
+  z-min: -5000
+  z-max: 5000
+  flatness-check: true         # проверять ровность места
+  max-height-diff: 8           # макс. перепад высот в пределах площадки (она теперь 34x35)
+  max-attempts: 50             # попыток найти место (площадка теперь большая - 24x25)
+
+timers:
+  open-after-seconds: 300              # 5 минут до открытия
+  disappear-after-open-seconds: 1200   # 20 минут после открытия, потом ивент исчезает
+
+zone:
+  radius: 20                   # граница ивента (стражи не выходят за неё)
+
+# Схематика дома. Лежит в plugins/DomSanta/domsanta.schem (при первом запуске создаётся из jar).
+# Можно подменить файл своим и сделать /domsanta reload. Формат: Sponge v2 (.schem, WorldEdit/FAWE).
+# Координаты ниже - ВНУТРИ схематики, от её угла (0 0 0), в блоках.
+schematic:
+  file: domsanta.schem
+  shulker-x: 17                # клетка шалкера (внутри дома, на пьедестале)
+  shulker-y: 1
+  shulker-z: 13
+  teleport-x: 19               # точка /domsanta tp (перед дверью)
+  teleport-y: 1
+  teleport-z: 19
+
+remove-when-empty: false       # убрать ивент раньше, если всё забрали
+
+auto-start:
+  enabled: true
+  timezone: "Europe/Moscow"    # часовой пояс для times (Москва, UTC+3)
+  timezone-label: "МСК"        # как подписывать время в /domsanta
+  times: ["10:00"]             # ежедневный запуск в эти моменты, формат ЧЧ:мм. Можно несколько: ["10:00", "20:00"]
+  interval-minutes: 180        # запасной вариант: используется ТОЛЬКО если times пустой
+  spawn-chance: 100            # шанс (%) что ивент появится по таймеру (100 = всегда в 10:00)
+  min-online-players: 0
+  alerts-minutes: [120, 60, 30, 1]   # оповещения за столько минут до запуска
+
+players-see-coordinates: true  # показывать координаты игрокам в /domsanta и в оповещении
+
+bossbar:
+  style: SEGMENTED_10          # SOLID, SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20
+  locked-color: PURPLE
+  open-color: RED
+  last-minute-color: WHITE
+  locked-title: "&b{snow} &4&lПОДАРОК САНТЫ &8» &7Открытие через &f&l{time} &8│ &7Координаты: &e{coords} &8│ &7Стражи: &c{guards} &b{snow}"
+  open-title: "&f{snow} &c&lПОДАРОК ОТКРЫТ &8» &7Исчезнет через &f&l{time} &8│ &7Координаты: &e{coords} &8│ &7Стражи: &c{guards} &f{snow}"
+
+hologram:
+  locked:
+    - "&b❄ &4&lПОДАРОК &f&lСАНТЫ &b❄"
+    - "&cЗакрыт"
+    - "&7Откроется через: &f{time}"
+  open:
+    - "&b❄ &4&lПОДАРОК &f&lСАНТЫ &b❄"
+    - "&aОткрыт!"
+    - "&7Исчезнет через: &f{time}"
+
+guards:
+  count: 5
+  health: 60
+  damage: 7
+  totem-health: 45
+  totem-damage: 9
+  name: "&4&lСтраж Санты"
+  spawn-radius: 6.8        # запасной вариант (кольцо вокруг шалкера); обычно точки берутся автоматически вокруг дома
+
+# Лут: slots - номера слотов (0-53), можно диапазоны "0-11,15-20", chance - шанс % на КАЖДЫЙ слот
+loot:
+  snowballs:
+    slots: "0-11,15-20,24-29,33-53"
+    chance: 100
+    material: SNOWBALL
+    amount: 1
+    name: "&b❄ &4&lПодарок &f&lСанты &b❄"
+  end_crystals:
+    slots: "12,32"
+    chance: 100
+    material: END_CRYSTAL
+    amount: 16
+    name: "&b❄ &4&lПодарок &f&lСанты &b❄"
+  tipped_arrows:
+    slots: "13"
+    chance: 100
+    material: TIPPED_ARROW
+    amount: 32
+    base-potion: INSTANT_DAMAGE
+    base-upgraded: true
+    name: "&b❄ &4&lПодарок &f&lСанты &b❄"
+  white_shulker:
+    slots: "14"
+    chance: 100
+    material: WHITE_SHULKER_BOX
+    name: "&b❄ &4&lПодарок &f&lСанты &b❄"
+  light_blue_shulker:
+    slots: "30"
+    chance: 100
+    material: LIGHT_BLUE_SHULKER_BOX
+    name: "&b❄ &4&lПодарок &f&lСанты &b❄"
+  totem:
+    slots: "31"
+    chance: 100
+    material: TOTEM_OF_UNDYING
+    name: "&b❄ &4&lПодарок &f&lСанты &b❄"
+  buff_potion_a:
+    slots: "21"
+    chance: 60
+    material: POTION
+    name: "&b❄ &4&lПодарок &f&lСанты &b❄"
+    effects: ["DAMAGE_RESISTANCE:500:3", "SPEED:600:2"]
+    ei-id: baf_santa
+    lore:
+      - "&7"
+      - "&7&oMade with &r&bExecutableItems"
+
+  buff_potion_b:
+    slots: "23"
+    chance: 50
+    material: POTION
+    name: "&b❄ &4&lПодарок &f&lСанты &b❄"
+    effects: ["DAMAGE_RESISTANCE:500:3", "SPEED:600:2"]
+    ei-id: baf_santa
+    lore:
+      - "&7"
+      - "&7&oMade with &r&bExecutableItems"
+
+  sfera:
+    slots: "22"
+    chance: 4
+    special: SFERA
+    ei-id: sfera_dedmoroz
+    lore:
+      - "&7"
+      - "&7&oMade with &r&bExecutableItems"
+    name: "&c&lСфера Санты"
+    texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTRlNDI0YjE2NzZmZWVjM2EzZjhlYmFkZTllN2Q2YTZmNzFmNzc1NmE4NjlmMzZmN2RmMGZjMTgyZDQzNmUifX19"
+
+messages:
+  prefix: "&8[&bDomSanta&8] "
+  no-permission: "&cНет прав."
+  only-player: "&cТолько для игроков."
+  unknown: "&8Используйте: &7/domsanta &8| админ: &7/domsanta &8tp | start | stop | reload"
+  reloaded: "&aКонфиг перезагружен."
+  already-running: "&cИвент уже идёт."
+  no-world: "&cМир ивента не найден."
+  no-location: "&cНе удалось найти подходящее место, попробуйте ещё раз."
+  no-schematic: "&cСхематика не загружена, смотрите консоль."
+  reloaded-no-schem: "&eКонфиг перезагружен, но схематика НЕ загрузилась - смотрите консоль."
+  error: "&cОшибка запуска, смотрите консоль."
+  not-running: "&cСейчас ивент не идёт."
+  stopped: "&aИвент остановлен."
+  teleported: "&aВы телепортированы к ивенту."
+  locked: "&cПодарок ещё закрыт! Откроется через &f{time}"
+
+  alert:
+    - ""
+    - "&b❄ &fПодарок Санты появится через &c&l{time}&f!"
+    - "&7  Готовьте броню и оружие, дом охраняют стражи."
+    - "&7  Следите за новостями: &b/domsanta"
+    - ""
+
+  start:
+    - ""
+    - "&8&m                                                    "
+    - "      &b❄ &4&lПОДАРОК &f&lСАНТЫ &b❄"
+    - ""
+    - "  &7Тёмный Санта оставил свой дом в мире &f{world}&7."
+    - "  &7Его охраняют &c{guards} стражей &7в незеритовой броне."
+    - "  &7Внутри ждут &eбафы &7и редкая &cСфера Санты&7."
+    - ""
+    - "  &6⌖ &7Координаты: &e&l{x} {y} {z}"
+    - "  &6⌛ &7Откроется через: &f&l{open}"
+    - "  &6⚑ &7Расстояние и статус: &b&n/domsanta"
+    - ""
+    - "&8&m                                                    "
+    - ""
+  start-nocoords:
+    - ""
+    - "&8&m                                                    "
+    - "      &b❄ &4&lПОДАРОК &f&lСАНТЫ &b❄"
+    - ""
+    - "  &7Тёмный Санта оставил свой дом в мире &f{world}&7."
+    - "  &7Его охраняют &c{guards} стражей &7в незеритовой броне."
+    - "  &7Внутри ждут &eбафы &7и редкая &cСфера Санты&7."
+    - ""
+    - "  &6⌛ &7Откроется через: &f&l{open}"
+    - "  &6⚑ &7Подробности: &b&n/domsanta"
+    - ""
+    - "&8&m                                                    "
+    - ""
+
+  opened:
+    - ""
+    - "&8&m                                                    "
+    - "    &b❄ &a&lПОДАРОК САНТЫ ОТКРЫТ! &b❄"
+    - ""
+    - "  &7Шалкер в доме Санты теперь можно открыть."
+    - "  &7Успейте забрать награду, пока &c&l{time} &7не истекло!"
+    - "  &6⌖ &7Координаты: &e&l{x} {y} {z}"
+    - "  &6⚔ &7Осторожно, стражи нападут на каждого!"
+    - "  &6⚑ &7Статус и расстояние: &b&n/domsanta"
+    - ""
+    - "&8&m                                                    "
+    - ""
+
+  ended:
+    - ""
+    - "&8&m                                                    "
+    - "    &b❄ &7Дом Санты растворился во тьме... &b❄"
+    - ""
+    - "  &7Спасибо всем, кто участвовал! Следующий подарок"
+    - "  &7появится позже. Следите за &b&n/domsanta"
+    - ""
+    - "&8&m                                                    "
+    - ""
+
+  title-start: "&b❄ &4&lПОДАРОК &f&lСАНТЫ &b❄"
+  subtitle-start: "&7Координаты: &e{coords} &8│ &b/domsanta"
+  title-open: "&4&l❄ ПОДАРОК ОТКРЫТ ❄"
+  subtitle-open: "&7Забери свой подарок!"
+  # Вид /domsanta. {time} = ЧЧ:мм:сс / мм:сс, {left} = «4 ч 47 мин», {clock} = «10:00», {tz} = «МСК»
+  info-header: "&4✠ &c&lДОМ САНТЫ &4✠"
+  info-none: "&7Статус: &cспит"
+  info-next: "&7Следующий спавн: &f{clock} {tz} &8(&7через &f{left}&8)"
+  info-locked: "&7Статус: &6заперт &8(&7откроется через &f{time}&8)"
+  info-open: "&7Статус: &4открыт &8(&7исчезнет через &f{time}&8)"
+  info-guards: "&7Стражи: &c{guards}"
+  info-coords: "&7Координаты: &f{x} {y} {z} &8(мир {world})"
+  info-distance: "&7До дома: &f{dist} блоков"
+  info-admin: "&8Админ: &7/domsanta &8| &7start &8| &7stop &8| &7reload &8| &7tp"

@@ -1,0 +1,17 @@
+name: DomSanta
+version: 1.0.0
+main: ru.domsanta.DomSantaPlugin
+api-version: '1.20'
+description: Тёмный новогодний ивент - Подарок Санты
+commands:
+  domsanta:
+    description: Ивент Подарок Санты
+    usage: /domsanta [tp|start|stop|reload]
+    aliases: [dsanta]
+permissions:
+  domsanta.use:
+    default: true
+  domsanta.admin:
+    default: op
+  domsanta.bypass:
+    default: op
